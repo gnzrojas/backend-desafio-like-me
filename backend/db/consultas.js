@@ -1,13 +1,15 @@
-import { pool } from "./db/consultas.js"
+import {pool} from "../connection.js"
 
-const getData = async () => {
-    const result = await pool.query('SELECT NOW()');
-    //console.log(JSON.stringify(result), null, 4);
+//Muestra datos de la tabla
+// const getData = async () => {
+//     const result = await pool.query('SELECT * FROM posts ORDER BY id ASC');
+//     //console.log(JSON.stringify(result), null, 4);
     
-}
-getData();
+// }
+// getData();
 
-const addData = async (titulo, img, descripcion) => {
+//Función para agregar un registro a la tabla
+const postData = async (titulo, img, descripcion) => {
     const consultaSQL = 'INSERT INTO posts values (DEFAULT, $1, $2, $3, 0)';
     const values = [titulo, img, descripcion];
     const result = await pool.query(consultaSQL, values);
@@ -19,12 +21,18 @@ const addData = async (titulo, img, descripcion) => {
 //     'El más fuerte del universo'
 // );
 
-const getPost = async () => {
+//Función obtener los registros de la tabla
+const getData = async () => {
     const { rows } = await pool.query('SELECT * FROM posts');
-    //console.log('Posts registrados: ');
-    //console.table(rows);
     return rows;
     
 };
 
-export { addData, getPost, pool };
+//Función para modificar un registro
+const putData = async (id) => {
+    const querySql = 'UPDATE posts SET likes = likes+1 WHERE id = $1 RETURNING *'; //Solo like debe actualizarse
+    const result = await pool.query(querySql, [id]);
+    return result.rows[0];
+};
+
+export { postData, getData, putData, pool };
