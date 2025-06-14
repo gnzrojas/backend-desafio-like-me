@@ -32,7 +32,7 @@ function App() {
   // este método se utilizará en el siguiente desafío
   const eliminarPost = async (id) => {
     await axios.delete(urlBaseServer + `/posts/${id}`);
-    getPosts();
+    setPosts(posts.filter(post => post.id !== id));
   };
 
   useEffect(() => {

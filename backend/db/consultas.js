@@ -35,4 +35,11 @@ const putData = async (id) => {
     return result.rows[0];
 };
 
-export { postData, getData, putData, pool };
+//Función para eliminar un registro
+const deleteData = async (id) => {
+    const querySql = "DELETE FROM posts WHERE id = $1";
+    const result = await pool.query(querySql, [id]);
+    return result.rows[0];
+};
+
+export { postData, getData, putData, deleteData, pool };

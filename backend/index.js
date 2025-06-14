@@ -1,5 +1,5 @@
 import express from "express";
-import { postData, getData, putData } from './db/consultas.js'
+import { postData, getData, putData, deleteData } from './db/consultas.js'
 import cors from 'cors';
 import 'dotenv-flow/config';
 
@@ -53,4 +53,11 @@ app.put('/posts/like/:id', async (req, res) => {
     }
 
 });
+
+//Endpoint para eliminar un registro
+app.delete('/posts/:id', async(req,res) => {
+    const { id } = req.params;
+    await deleteData(id);
+    res.send('Registro eliminado con éxito✅')
+})
 
